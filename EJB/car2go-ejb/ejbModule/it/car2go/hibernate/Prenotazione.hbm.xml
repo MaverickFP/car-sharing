@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="it.car2go.model">
+    <class name="Prenotazione" table="Prenotazione">
+        <id name="idPrenotazione" column="idPrenotazione">
+            <generator class="native"/>
+        </id>
+        <many-to-one name="idUtente" class="Utente" column="idUtente"   not-null="true" lazy="false"/>
+        <many-to-one name="idMacchina" class="Macchina" column="idMacchina"  not-null="true" lazy="false"/>
+        <property name="distanza" column="distanza" type="int"/>
+        <property name="tempo" column="tempo" type="int"/>
+        <property name="data" column="data" type="date"/>
+    </class>    
+</hibernate-mapping>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:lang="http://www.springframework.org/schema/lang"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-4.0.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.0.xsd
+		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-4.0.xsd">
+
+
+	<bean id="macchinaService" class="org.springframework.remoting.rmi.RmiProxyFactoryBean">
+		<property name="serviceUrl" value="rmi://localhost:2099/macchinaService"/>
+		<property name="serviceInterface" value="it.car2go.service.MacchinaService"/>
+	</bean>
+	
+	
+	<bean id="ruoloService" class="org.springframework.remoting.rmi.RmiProxyFactoryBean">
+		<property name="serviceUrl" value="rmi://localhost:2099/ruoloService"/>
+		<property name="serviceInterface" value="it.car2go.service.RuoloService"/>
+	</bean>
+
+	<bean id="utenteService" class="org.springframework.remoting.rmi.RmiProxyFactoryBean">
+		<property name="serviceUrl" value="rmi://localhost:2099/utenteService"/>
+		<property name="serviceInterface" value="it.car2go.service.UtenteService"/>
+	</bean>
+
+</beans>
