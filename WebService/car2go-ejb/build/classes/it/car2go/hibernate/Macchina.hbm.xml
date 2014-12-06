@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="it.car2go.model">
+    <class name="Macchina" table="Macchina">
+        <id name="idMacchina" column="idMacchina">
+            <generator class="native"/>
+        </id>
+        <property name="tipo" column="tipo" type="string"/>
+        <property name="codice" column="codice" type="int"/>
+        <property name="latitudine" column="latitudine" type="float"/>
+        <property name="longitudine" column="longitudine" type="float"/>
+        <property name="indirizzo" column="indirizzo" type="string"/>
+        <property name="interno" column="interno" type="int"/>
+        <property name="esterno" column="esterno" type="int"/>
+        <property name="serbatoio" column="serbatoio" type="int"/>
+        <property name="prenotata" column="prenotata" type="int"/>
+        <property name="note" column="note" type="string"/>
+    </class>    
+</hibernate-mapping>

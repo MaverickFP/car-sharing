@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:lang="http://www.springframework.org/schema/lang"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-4.0.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.0.xsd
+		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-4.0.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+		
+		
+	
+	<bean id="macchinaService" class="it.car2go.rmi.servente.MacchinaServant">
+		<property name="macchinaDao" ref="macchinaDao"/>
+	</bean>
+	
+	
+	<bean id="macchinaDao" class="it.car2go.hibernatedao.MacchinaHibernateDAO">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	
+	<bean id="ruoloService" class="it.car2go.rmi.servente.RuoloServant">
+		<property name="ruoloDao" ref="ruoloDao"/>
+	</bean>
+	
+	
+	<bean id="ruoloDao" class="it.car2go.hibernatedao.RuoloHibernateDAO">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	
+	<bean id="utenteService" class="it.car2go.rmi.servente.UtenteServant">
+		<property name="utenteDao" ref="utenteDao"/>
+	</bean>
+	
+	
+	<bean id="utenteDao" class="it.car2go.hibernatedao.UtenteHibernateDAO">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	
+	<bean id="prenotazioneService" class="it.car2go.rmi.servente.PrenotazioneServant">
+		<property name="prenotazioneDao" ref="prenotazioneDao"/>
+	</bean>
+	
+	<bean id="prenotazioneDao" class="it.car2go.hibernatedao.PrenotazioneHibernateDAO">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	
+	
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+			<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+			<property name="url" value="jdbc:mysql://localhost:3306/car2go"/>
+			<property name="username" value="root"/>
+	</bean>
+	
+	
+	<!-- senza usare il file hibernate.cfg.xml  quello che serve e' tutto qui -->
+		<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+			<property name="dataSource" ref="dataSource"/>
+			<property name="mappingResources">
+				<list>
+					<value>it/car2go/hibernate/Ruolo.hbm.xml</value>
+					<value>it/car2go/hibernate/Utente.hbm.xml</value>
+					<value>it/car2go/hibernate/Macchina.hbm.xml</value>
+					<value>it/car2go/hibernate/Prenotazione.hbm.xml</value>
+				</list>
+			</property>				
+			<property name="hibernateProperties">
+				<props>
+					<prop key="hibernate.hbm2ddl.auto">update</prop>
+					<prop key="dialect">org.hibernate.dialect.MySQLDialect</prop>
+					<prop key="hibernate.current_session_context_class">thread</prop>
+				</props>
+			</property>		
+		</bean>
+	
+	<tx:annotation-driven />
+	<bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+		
+		
+	<context:component-scan base-package="it.car2go.hibernatedao"/>
+		
+		
+		
+		
+	<bean class="org.springframework.remoting.rmi.RmiServiceExporter">
+    <!-- does not necessarily have to be the same name as the bean to be exported -->
+    <!-- serviceName represents RMI Service Name -->
+    <property name="serviceName" value="macchinaService"/>
+    <!-- service represents RMI Object(RMI Service Impl) -->
+    <property name="service" ref="macchinaService"/>
+    <!-- serviceInterface represents RMI Service Interface exposed -->
+    <property name="serviceInterface" value="it.car2go.service.MacchinaService"/>
+    <!-- defaults to 1099 -->
+    <property name="registryPort" value="2099"/>
+    <!-- <property name="registryHost" value="192.168.50.102"/>   -->
+    </bean>	
+    
+    
+    <bean class="org.springframework.remoting.rmi.RmiServiceExporter">
+    <!-- does not necessarily have to be the same name as the bean to be exported -->
+    <!-- serviceName represents RMI Service Name -->
+    <property name="serviceName" value="ruoloService"/>
+    <!-- service represents RMI Object(RMI Service Impl) -->
+    <property name="service" ref="ruoloService"/>
+    <!-- serviceInterface represents RMI Service Interface exposed -->
+    <property name="serviceInterface" value="it.car2go.service.RuoloService"/>
+    <!-- defaults to 1099 -->
+    <property name="registryPort" value="2099"/>
+    <!-- <property name="registryHost" value="192.168.50.102"/>   -->        
+	</bean>		
+		
+		
+		
+	<bean class="org.springframework.remoting.rmi.RmiServiceExporter">
+    <!-- does not necessarily have to be the same name as the bean to be exported -->
+    <!-- serviceName represents RMI Service Name -->
+    <property name="serviceName" value="utenteService"/>
+    <!-- service represents RMI Object(RMI Service Impl) -->
+    <property name="service" ref="utenteService"/>
+    <!-- serviceInterface represents RMI Service Interface exposed -->
+    <property name="serviceInterface" value="it.car2go.service.UtenteService"/>
+    <!-- defaults to 1099 -->
+    <property name="registryPort" value="2099"/>
+    <!-- <property name="registryHost" value="192.168.50.102"/>   -->        
+	</bean>		
+		
+	<bean class="org.springframework.remoting.rmi.RmiServiceExporter">
+    <!-- does not necessarily have to be the same name as the bean to be exported -->
+    <!-- serviceName represents RMI Service Name -->
+    <property name="serviceName" value="prenotazioneService"/>
+    <!-- service represents RMI Object(RMI Service Impl) -->
+    <property name="service" ref="prenotazioneService"/>
+    <!-- serviceInterface represents RMI Service Interface exposed -->
+    <property name="serviceInterface" value="it.car2go.service.PrenotazioneService"/>
+    <!-- defaults to 1099 -->
+    <property name="registryPort" value="2099"/>
+    <!-- <property name="registryHost" value="192.168.50.102"/>   -->        
+	</bean>	
+
+
+</beans>

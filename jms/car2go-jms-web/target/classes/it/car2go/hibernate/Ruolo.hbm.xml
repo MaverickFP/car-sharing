@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="it.car2go.model">
+    <class name="Ruolo" table="Ruolo">
+        <id name="idRuolo" column="idRuolo">
+            <generator class="native"/>
+        </id>
+        <property name="nome" column="nome" type="string"/>
+        <property name="codice" column="codice" type="int"/>
+    </class>    
+</hibernate-mapping>
